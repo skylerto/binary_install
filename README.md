@@ -32,21 +32,6 @@ a platform independent way.
   </tr>
 </table>
 
-## Usage
-
-### binary_install::default
-
-Just include `binary_install` in your node's `run_list`:
-
-```json
-{
-  "name":"my_node",
-  "run_list": [
-    "recipe[binary_install]"
-  ]
-}
-```
-
 ## Contributing
 
 1. Fork the repository on Github
