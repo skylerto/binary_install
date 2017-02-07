@@ -25,11 +25,11 @@ action :install do
       mode '0755'
       action :create
     end
-    if archive.eql? 'zip'
+    if archive.include? 'zip'
       windows_zipfile "#{destination}/#{service}" do
         source "C:/#{source}"
         action :unzip
-        not_if { ::File.exist?("#{destination}/#{service}") }
+        # not_if { ::File.exist?("#{destination}/#{service}") }
       end
     else
       Chef::Application.fatal!("#{archive} not currently supported for windows!")
@@ -51,7 +51,7 @@ action :install do
       mode '0755'
       action :create
     end
-    if archive.eql? 'tar.gz'
+    if archive.include? 'tar.gz'
       if strip_directory.eql? 'true'
         execute 'untar strip' do
           command "tar xzf /tmp/#{source} -C #{destination}/#{service} --strip-components=1"
