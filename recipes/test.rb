@@ -6,11 +6,13 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-#
-binary_install 'tomcat' do
-  source 'apache-tomcat-8.5.11.tar.gz'
-  destination '/etc'
+
+install = node['binary_install']
+
+binary_install 'apache-tomcat-8.5.11.tar.gz' do
+  service 'tomcat'
+  destinations install['default_directory']
   archive 'tar.gz'
-  strip_directory true
+  strip_directory install['strip_directory']
   action :install
 end

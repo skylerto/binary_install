@@ -25,21 +25,21 @@ a platform independent way.
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>['binary_install']['default_directory']</tt></td>
-    <td>String</td>
-    <td>the directory to install software if not specified</td>
-    <td><tt>true</tt></td>
-  </tr>
-  <tr>
     <td><tt>['binary_install']['default_directory']['windows']</tt></td>
     <td>String</td>
     <td>the default platform directory to install software</td>
-    <td><tt>true</tt></td>
+    <td><tt>C:</tt></td>
   </tr>
   <tr>
     <td><tt>['binary_install']['default_directory']['linux']</tt></td>
     <td>String</td>
     <td>the default platform directory to install software</td>
+    <td><tt>/etc</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['binary_install']['strip_directory']</tt></td>
+    <td>Boolean</td>
+    <td>extract the contents of an archived folder into the directory</td>
     <td><tt>true</tt></td>
   </tr>
 </table>
