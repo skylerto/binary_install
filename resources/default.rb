@@ -16,6 +16,24 @@ action :install do
     if destinations['windows']
       destination = destinations['windows']
     end
+    directory "#{destination}/#{service}" do
+      recursive true
+      action :create
+    end
+    cookbook_file "C:/#{source}" do
+      source source
+      mode '0755'
+      action :create
+    end
+    if archive.eql? 'zip'
+      windows_zipfile "#{destination}/#{service}" do
+        source "C:/#{source}"
+        action :unzip
+        not_if { ::File.exist?("#{destination}/#{service}") }
+      end
+    else
+      Chef::Application.fatal!("#{archive} not currently supported for windows!")
+    end
   else
     if destinations['linux']
       destination = destinations['linux']
