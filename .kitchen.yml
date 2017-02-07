@@ -8,11 +8,11 @@ provisioner:
   name: chef_zero
 
 platforms:
-  - name: centos-6.7
-  - name: centos-7.1
-  - name: ubuntu-12.04
+  # - name: centos-6.7
+  # - name: centos-7.1
+  # - name: ubuntu-12.04
   - name: ubuntu-14.04
 
 suites:
   - name: binary_install_test
-    run_list: binary_install_test::install
+    run_list: binary_install::test
