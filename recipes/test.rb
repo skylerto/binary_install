@@ -9,10 +9,10 @@
 
 install = node['binary_install']
 
-binary_install 'apache-tomcat-8.5.11.tar.gz' do
-  service 'tomcat'
+binary_install 'test.zip' do
+  service 'test'
   destinations install['default_directory']
-  archive 'tar.gz'
+  archive 'zip'
   strip_directory install['strip_directory']
   action :install
 end

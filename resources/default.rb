@@ -16,20 +16,19 @@ action :install do
     if destinations['windows']
       destination = destinations['windows']
     end
+    zip_file = "C:/#{source}"
     directory "#{destination}/#{service}" do
       recursive true
       action :create
     end
     cookbook_file "C:/#{source}" do
       source source
-      mode '0755'
       action :create
     end
     if archive.include? 'zip'
       windows_zipfile "#{destination}/#{service}" do
-        source "C:/#{source}"
+        source zip_file
         action :unzip
-        # not_if { ::File.exist?("#{destination}/#{service}") }
       end
     else
       Chef::Application.fatal!("#{archive} not currently supported for windows!")
@@ -55,13 +54,11 @@ action :install do
       if strip_directory.eql? 'true'
         execute 'untar strip' do
           command "tar xzf /tmp/#{source} -C #{destination}/#{service} --strip-components=1"
-          not_if { ::File.exist?("#{destination}/#{service}") }
           action :run
         end
       else
         execute 'untar no strip' do
           command "tar xzf /tmp/#{source} -C #{destination}/#{service}"
-          not_if { ::File.exist?("#{destination}/#{service}") }
           action :run
         end
       end
@@ -69,13 +66,11 @@ action :install do
       if strip_directory.eql? 'true'
         execute 'unzip strip' do
           command "unzip /tmp/#{source} && mv /tmp/#{source.sub(/\.zip/, '')} #{destination}/#{service}"
-          not_if { ::File.exist?("#{destination}/#{service}") }
           action :run
         end
       else
         execute 'unzip no strip' do
           command "unzip /tmp/#{source} -d #{destination}/#{service}"
-          not_if { ::File.exist?("#{destination}/#{service}") }
           action :run
         end
       end
