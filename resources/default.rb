@@ -17,7 +17,7 @@ action :install do
       destination = destinations['windows']
     end
     zip_file = "C:/Windows/TEMP/#{source}"
-    directory "#{destination}/#{service}" do
+    directory "#{destination}" do
       recursive true
       action :create
     end
@@ -26,7 +26,7 @@ action :install do
       action :create
     end
     if archive.include? 'zip'
-      windows_zipfile "#{destination}/#{service}" do
+      windows_zipfile "#{destination}" do
         source zip_file
         action :unzip
       end
