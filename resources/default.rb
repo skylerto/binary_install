@@ -16,12 +16,12 @@ action :install do
     if destinations['windows']
       destination = destinations['windows']
     end
-    zip_file = "C:/Windows/TEMP/#{source}"
+    zip_file = "#{node['binary_install']['default_drive']['windows']}/Windows/TEMP/#{source}"
     directory "#{destination}" do
       recursive true
       action :create
     end
-    cookbook_file "C:/Windows/TEMP/#{source}" do
+    cookbook_file "#{node['binary_install']['default_drive']['windows']}/Windows/TEMP/#{source}" do
       source source
       action :create
     end
