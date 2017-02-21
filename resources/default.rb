@@ -6,7 +6,6 @@ property :destination, String
 property :destinations, Hash
 property :archive, String
 property :strip_directory, String
-property :usern, String
 
 action :install do
   log "#{service}, #{source}, #{destination}, #{destinations}, #{archive}"
@@ -37,12 +36,9 @@ action :install do
     if destinations['linux']
       destination = destinations['linux']
     end
-	if usern == ""
-		usern = 'root'
-	end
     # => On Ubuntu/Most linux distros
     directory "#{destination}/#{service}" do
-      owner usern
+      owner 'root'
       mode '0755'
       recursive true
       action :create
@@ -50,20 +46,17 @@ action :install do
     cookbook_file "#{temp_dir}/#{source}" do
       source source
       mode '0755'
-	  owner usern
       action :create
     end
     if archive.include? 'tar.gz'
       if strip_directory.eql? 'true'
         execute 'untar strip' do
           command "tar xzf #{temp_dir}/#{source} -C #{destination}/#{service} --strip-components=1"
-		  user usern
           action :run
         end
       else
         execute 'untar no strip' do
           command "tar xzf #{temp_dir}/#{source} -C #{destination}/#{service}"
-		  user usern
           action :run
         end
       end
