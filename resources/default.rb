@@ -39,13 +39,13 @@ action :install do
     # => On Ubuntu/Most linux distros
     directory "#{destination}/#{service}" do
       owner 'root'
-      mode '0755'
+      mode '0750'
       recursive true
       action :create
     end
     cookbook_file "#{temp_dir}/#{source}" do
       source source
-      mode '0755'
+      mode '0750'
       action :create
     end
     if archive.include? 'tar.gz'
