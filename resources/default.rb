@@ -7,21 +7,20 @@ property :destinations, Hash
 property :archive, String
 property :strip_directory, String
 
-
 action :install do
   log "#{service}, #{source}, #{destination}, #{destinations}, #{archive}"
-
-
+  temp_dir = Chef::Config[:file_cache_path]
+  
   if node[:platform_family].include? 'win'
     if destinations['windows']
       destination = destinations['windows']
     end
-    zip_file = "C:/Windows/TEMP/#{source}"
+    zip_file = "#{temp_dir}/#{source}"
     directory "#{destination}" do
       recursive true
       action :create
     end
-    cookbook_file "C:/Windows/TEMP/#{source}" do
+    cookbook_file "#{temp_dir}/#{source}" do
       source source
       action :create
     end
@@ -40,37 +39,36 @@ action :install do
     # => On Ubuntu/Most linux distros
     directory "#{destination}/#{service}" do
       owner 'root'
-      group 'root'
-      mode '0755'
+      mode '0750'
       recursive true
       action :create
     end
-    cookbook_file "/tmp/#{source}" do
+    cookbook_file "#{temp_dir}/#{source}" do
       source source
-      mode '0755'
+      mode '0750'
       action :create
     end
     if archive.include? 'tar.gz'
       if strip_directory.eql? 'true'
         execute 'untar strip' do
-          command "tar xzf /tmp/#{source} -C #{destination}/#{service} --strip-components=1"
+          command "tar xzf #{temp_dir}/#{source} -C #{destination}/#{service} --strip-components=1"
           action :run
         end
       else
         execute 'untar no strip' do
-          command "tar xzf /tmp/#{source} -C #{destination}/#{service}"
+          command "tar xzf #{temp_dir}/#{source} -C #{destination}/#{service}"
           action :run
         end
       end
     elsif archive.eql? 'zip'
       if strip_directory.eql? 'true'
         execute 'unzip strip' do
-          command "unzip /tmp/#{source} && mv /tmp/#{source.sub(/\.zip/, '')} #{destination}/#{service}"
+          command "unzip #{temp_dir}/#{source} && mv #{temp_dir}/#{source.sub(/\.zip/, '')} #{destination}/#{service}"
           action :run
         end
       else
         execute 'unzip no strip' do
-          command "unzip /tmp/#{source} -d #{destination}/#{service}"
+          command "unzip #{temp_dir}/#{source} -d #{destination}/#{service}"
           action :run
         end
       end
